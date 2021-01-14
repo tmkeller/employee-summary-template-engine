@@ -20,7 +20,7 @@ const employeeArray = [];
 init();
 // Initializes the program by getting the Manager's information.
 function init() {
-    console.log( "Building new engineering team. Enter manager information:" )
+    console.log( "\n", "Building new engineering team. Enter manager information:" )
     inquirer.prompt( managerQuestions ).then( ( response, err ) => {
         if ( response ) {
             const manager = new Manager( response.name, response.id, response.email, response.officeNumber );
@@ -53,7 +53,7 @@ function addNew() {
 }
 
 function addEngineer() {
-    console.log( "Enter new engineer information:" );
+    console.log( "\n", "Enter new engineer information:" );
     inquirer.prompt( engineerQuestions ).then( ( response, err ) => {
         if ( response ) {
             const engineer = new Engineer( response.name, response.id, response.email, response.github );
@@ -66,7 +66,7 @@ function addEngineer() {
 }
 
 function addIntern() {
-    console.log( "Enter new intern information:" )
+    console.log( "\n", "Enter new intern information:" )
     inquirer.prompt( internQuestions ).then( ( response, err ) => {
         if ( response ) {
             const intern = new Intern( response.name, response.id, response.email, response.school );
@@ -85,6 +85,6 @@ function renderEmployees() {
 
     // Write the markup to our output file.
     fs.writeFile( outputPath, rendered, ( err ) => {
-        err ? console.log( err ) : console.log( `Employee profiles have been rendered. Enjoy!` );
+        err ? console.log( err ) : console.log( "\n", `Employee profiles have been rendered. Enjoy!` );
     })
 }
