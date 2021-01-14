@@ -17,25 +17,36 @@ const render = require("./lib/htmlRenderer");
 const managerQuestions = [
     {
         type: 'input',
-        message: 'How many employees?',
+        message: 'Manager name:',
         name: 'name'
     }
 ]
 
-inquirer.prompt( managerQuestions ).then( response => {
-    var string = JSON.stringify( response );
-    if ( response ) {
-        fs.readFile( './templates/manager.html', 'utf8', ( error, data ) => {
-            if ( error ) {
-                console.log( error );
-            } else {
-                fs.appendFile( './output/team.html', data, ( err ) => {
-                    err ? console.log( err ) : console.log( "It worked!" );
-                })
-            }
-        })
-    }
-});
+const greg = new Manager( "Greg", 1, "greg@greg.com", 12 );
+const alice = new Engineer( "Alice", 2, "alice@alice.com", "alicecode" )
+const sam = new Intern( "Sam", 3, "sam@sam.com", "UW" );
+
+const empArr = [ greg, alice, sam ];
+
+const rendies = render( empArr );
+fs.appendFile( './output/team.html', rendies, ( err ) => {
+    err ? console.log( err ) : console.log( "It worked!" );
+})
+
+// inquirer.prompt( managerQuestions ).then( response => {
+//     var string = JSON.stringify( response );
+//     if ( response ) {
+//         fs.readFile( './templates/manager.html', 'utf8', ( error, data ) => {
+//             if ( error ) {
+//                 console.log( error );
+//             } else {
+//                 fs.appendFile( './output/team.html', data, ( err ) => {
+//                     err ? console.log( err ) : console.log( "It worked!" );
+//                 })
+//             }
+//         })
+//     }
+// });
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
