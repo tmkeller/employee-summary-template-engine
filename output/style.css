@@ -1,0 +1,26 @@
+body {
+    background-color: ivory;
+}
+
+.team-heading {
+    background-color: rgb(59, 115, 219);
+    color: white;
+}
+
+.card.employee-card {
+    padding: 0;
+    margin: 0;
+}
+
+.card-header {
+    background-color: rgb(0, 65, 204);
+    color: white;
+}
+
+.card-title {
+    text-align: center;
+}
+
+.card-body {
+    background-color: grey;
+}
