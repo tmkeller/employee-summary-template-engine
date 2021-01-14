@@ -25,8 +25,14 @@ const managerQuestions = [
 inquirer.prompt( managerQuestions ).then( response => {
     var string = JSON.stringify( response );
     if ( response ) {
-        fs.appendFile( './output/log.txt', string, ( err ) => {
-            err ? console.log( err ) : console.log( "It worked!" );
+        fs.readFile( './templates/manager.html', 'utf8', ( error, data ) => {
+            if ( error ) {
+                console.log( error );
+            } else {
+                fs.appendFile( './output/team.html', data, ( err ) => {
+                    err ? console.log( err ) : console.log( "It worked!" );
+                })
+            }
         })
     }
 });
