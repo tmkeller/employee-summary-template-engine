@@ -1,29 +1,28 @@
+// Import employee classes.
 const Manager = require("./lib/Manager");
 const Engineer = require("./lib/Engineer");
 const Intern = require("./lib/Intern");
+// Import questions arrays.
 const { managerQuestions, engineerQuestions, internQuestions, nextStep } = require("./lib/questions")
+// Import dependencies.
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const render = require("./lib/htmlRenderer");
 
+// The output directory for the final HTML file.
 const OUTPUT_DIR = path.resolve(__dirname, "output");
 const outputPath = path.join(OUTPUT_DIR, "team.html");
 
-const render = require("./lib/htmlRenderer");
-console.log( managerQuestions );
-
-
-// Write code to use inquirer to gather information about the development team members,
-// and to create objects for each team member (using the correct classes as blueprints!)
-
+// Create the array that will hold all our employee objects.
 const employeeArray = [];
 
+// Initializes the program by getting the Manager's information.
 inquirer.prompt( managerQuestions ).then( ( response, err ) => {
     if ( response ) {
         const manager = new Manager( response.name, response.id, response.email, response.officeNumber );
         employeeArray.push( manager );
-        console.log( employeeArray );
-
+        addNew();
     } else {
         console.log( err );
     }
@@ -34,10 +33,13 @@ function addNew() {
         if ( response ) {
             switch ( response.next ) {
                 case "Add an engineer":
+                    addEngineer();
                     break;
                 case "Add an intern":
+                    addIntern();
                     break;
                 default:
+                    renderEmployees();
                     break;
             }
         } else {
@@ -49,9 +51,9 @@ function addNew() {
 function addEngineer() {
     inquirer.prompt( engineerQuestions ).then( ( response, err ) => {
         if ( response ) {
-            console.log( response );
             const engineer = new Engineer( response.name, response.id, response.email, response.github );
             employeeArray.push( engineer );
+            addNew();
         } else {
             console.log( err );
         }
@@ -61,37 +63,22 @@ function addEngineer() {
 function addIntern() {
     inquirer.prompt( internQuestions ).then( ( response, err ) => {
         if ( response ) {
-            console.log( response );
             const intern = new Intern( response.name, response.id, response.email, response.school );
             employeeArray.push( intern );
+            addNew();
         } else {
             console.log( err );
         }
     });
 }
 
-// After the user has input all employees desired, call the `render` function (required
-// above) and pass in an array containing all employee objects; the `render` function will
-// generate and return a block of HTML including templated divs for each employee!
+function renderEmployees() {
 
-const rendies = render( employeeArray );
+    // The render function creates the markup for the final HTML file.
+    const rendered = render( employeeArray );
 
-// After you have your html, you're now ready to create an HTML file using the HTML
-// returned from the `render` function. Now write it to a file named `team.html` in the
-// `output` folder. You can use the variable `outputPath` above target this location.
-// Hint: you may need to check if the `output` folder exists and create it if it
-// does not.
-
-// fs.writeFile( './output/team.html', rendies, ( err ) => {
-//     err ? console.log( err ) : console.log( "It worked!" );
-// })
-
-// HINT: each employee type (manager, engineer, or intern) has slightly different
-// information; write your code to ask different questions via inquirer depending on
-// employee type.
-
-// HINT: make sure to build out your classes first! Remember that your Manager, Engineer,
-// and Intern classes should all extend from a class named Employee; see the directions
-// for further information. Be sure to test out each class and verify it generates an
-// object with the correct structure and methods. This structure will be crucial in order
-// for the provided `render` function to work! ```
+    // Write the markup to our output file.
+    fs.writeFile( outputPath, rendered, ( err ) => {
+        err ? console.log( err ) : console.log( `Employee profiles have been rendered. Enjoy!` );
+    })
+}
