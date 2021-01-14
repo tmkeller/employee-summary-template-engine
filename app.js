@@ -17,16 +17,20 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 // Create the array that will hold all our employee objects.
 const employeeArray = [];
 
+init();
 // Initializes the program by getting the Manager's information.
-inquirer.prompt( managerQuestions ).then( ( response, err ) => {
-    if ( response ) {
-        const manager = new Manager( response.name, response.id, response.email, response.officeNumber );
-        employeeArray.push( manager );
-        addNew();
-    } else {
-        console.log( err );
-    }
-});
+function init() {
+    console.log( "Building new engineering team. Enter manager information:" )
+    inquirer.prompt( managerQuestions ).then( ( response, err ) => {
+        if ( response ) {
+            const manager = new Manager( response.name, response.id, response.email, response.officeNumber );
+            employeeArray.push( manager );
+            addNew();
+        } else {
+            console.log( err );
+        }
+    });
+}
 
 function addNew() {
     inquirer.prompt( nextStep ).then( ( response, err ) => {
@@ -49,6 +53,7 @@ function addNew() {
 }
 
 function addEngineer() {
+    console.log( "Enter new engineer information:" );
     inquirer.prompt( engineerQuestions ).then( ( response, err ) => {
         if ( response ) {
             const engineer = new Engineer( response.name, response.id, response.email, response.github );
@@ -61,6 +66,7 @@ function addEngineer() {
 }
 
 function addIntern() {
+    console.log( "Enter new intern information:" )
     inquirer.prompt( internQuestions ).then( ( response, err ) => {
         if ( response ) {
             const intern = new Intern( response.name, response.id, response.email, response.school );
